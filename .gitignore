@@ -1,0 +1,42 @@
+# Dependencies
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+*.local
+
+# Google OAuth tokens
+token.json
+credentials.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Outputs (keep directories, ignore contents)
+outputs/reports/*
+outputs/solutions/*
+outputs/exports/*
+outputs/logs/*
+!outputs/**/.gitkeep
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
