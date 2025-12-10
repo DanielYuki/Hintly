@@ -18,8 +18,12 @@ class Config:
 
     # API Keys
     anthropic_api_key: str = ""
+    openai_api_key: str = ""
     google_client_id: str = ""
     google_client_secret: str = ""
+
+    # LLM Configuration
+    llm_provider: str = "anthropic"  # "anthropic" or "openai"
 
     # Paths
     base_dir: Path = field(default_factory=lambda: Path(__file__).parent.parent)
@@ -30,6 +34,7 @@ class Config:
     reports_dir: Path = field(default_factory=lambda: Path("outputs/reports"))
     solutions_dir: Path = field(default_factory=lambda: Path("outputs/solutions"))
     exports_dir: Path = field(default_factory=lambda: Path("outputs/exports"))
+    pdfs_dir: Path = field(default_factory=lambda: Path("outputs/pdfs"))
 
     # Google OAuth2 scopes
     scopes: list[str] = field(
@@ -38,6 +43,7 @@ class Config:
             "https://www.googleapis.com/auth/classroom.courseworkmaterials.readonly",
             "https://www.googleapis.com/auth/classroom.announcements.readonly",
             "https://www.googleapis.com/auth/classroom.student-submissions.me.readonly",
+            "https://www.googleapis.com/auth/drive.readonly",
         ]
     )
 
@@ -54,6 +60,7 @@ class Config:
         self.reports_dir.mkdir(parents=True, exist_ok=True)
         self.solutions_dir.mkdir(parents=True, exist_ok=True)
         self.exports_dir.mkdir(parents=True, exist_ok=True)
+        self.pdfs_dir.mkdir(parents=True, exist_ok=True)
         self.token_path.parent.mkdir(parents=True, exist_ok=True)
 
     def validate(self) -> list[str]:
@@ -65,9 +72,9 @@ class Config:
         """
         errors = []
 
-        if not self.anthropic_api_key:
-            errors.append("ANTHROPIC_API_KEY is not set")
-
+        # Only Google credentials are required for core functionality
+        # LLM API keys are optional (only needed for AI features)
+        
         if not self.google_client_id:
             errors.append("GOOGLE_CLIENT_ID is not set")
 
@@ -101,8 +108,10 @@ def get_config(env_path: Optional[Path] = None) -> Config:
     # Build config from environment
     config = Config(
         anthropic_api_key=os.getenv("ANTHROPIC_API_KEY", ""),
+        openai_api_key=os.getenv("OPENAI_API_KEY", ""),
         google_client_id=os.getenv("GOOGLE_CLIENT_ID", ""),
         google_client_secret=os.getenv("GOOGLE_CLIENT_SECRET", ""),
+        llm_provider=os.getenv("LLM_PROVIDER", "anthropic"),
     )
 
     # Optional: credentials file path
