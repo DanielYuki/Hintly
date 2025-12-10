@@ -25,12 +25,17 @@ credentials.json
 .DS_Store
 Thumbs.db
 
-# Outputs (keep directories, ignore contents)
+# Output directories (keep structure, ignore contents)
 outputs/reports/*
+!outputs/reports/.gitkeep
 outputs/solutions/*
+!outputs/solutions/.gitkeep
 outputs/exports/*
+!outputs/exports/.gitkeep
+outputs/pdfs/*
+!outputs/pdfs/.gitkeep
 outputs/logs/*
-!outputs/**/.gitkeep
+!outputs/logs/.gitkeep
 
 # Jupyter
 .ipynb_checkpoints/
