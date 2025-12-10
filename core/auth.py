@@ -130,12 +130,45 @@ class OAuth2Flow:
         """
         try:
             flow = self._create_flow()
-            self._credentials = flow.run_local_server(port=port)
+            # Try local server flow
+            self._credentials = flow.run_local_server(
+                port=port,
+                authorization_prompt_message="",
+                success_message="The authentication flow has completed. You may close this window.",
+                open_browser=True,
+            )
             self._save_token()
             return True
         except Exception as e:
-            print(f"Local server authentication failed: {e}")
-            return False
+            error_msg = str(e)
+            
+            # Handle scope mismatch error (Google reorders/modifies scopes)
+            if "Scope has changed" in error_msg:
+                print("\n" + "="*60)
+                print("Note: Google modified the OAuth scopes (this is normal).")
+                print("Checking if authentication was successful anyway...")
+                print("="*60 + "\n")
+                
+                # The token might have been saved successfully before the error
+                # Just verify it exists and is valid
+                if self.token_path.exists():
+                    try:
+                        self._credentials = Credentials.from_authorized_user_file(
+                            str(self.token_path), self.config.scopes
+                        )
+                        if self._credentials and self._credentials.valid:
+                            print("✓ Authentication successful!")
+                            return True
+                    except Exception:
+                        pass
+                
+                # If that didn't work, the error is real
+                print(f"Authentication failed: {error_msg}")
+                return False
+            else:
+                # Different error
+                print(f"Local server authentication failed: {error_msg}")
+                return False
 
     def revoke(self) -> bool:
         """
