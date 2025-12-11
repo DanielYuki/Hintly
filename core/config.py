@@ -44,6 +44,7 @@ class Config:
             "https://www.googleapis.com/auth/classroom.announcements.readonly",
             "https://www.googleapis.com/auth/classroom.student-submissions.me.readonly",
             "https://www.googleapis.com/auth/drive.readonly",
+            "https://www.googleapis.com/auth/forms.responses.readonly",
         ]
     )
 
