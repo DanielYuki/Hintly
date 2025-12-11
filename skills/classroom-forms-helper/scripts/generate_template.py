@@ -16,7 +16,7 @@ from datetime import datetime
 
 from rich.console import Console
 
-from core.forms_api import FormsClient
+from core.browser_forms import BrowserFormsClient
 from core.config import get_config
 
 
@@ -35,8 +35,8 @@ def generate_template(form_url: str, output_path: str = None):
     
     # Get form
     console.print("[cyan]Fetching form...[/cyan]")
-    client = FormsClient()
-    form = client.get_form_from_url(form_url)
+    client = BrowserFormsClient()
+    form = client.get_form(form_url)
     
     console.print(f"[green]✓[/green] Form: [bold]{form.title}[/bold]")
     
@@ -74,6 +74,7 @@ def generate_template(form_url: str, output_path: str = None):
     if output_path:
         output = Path(output_path)
     else:
+        # Use reports directory (not solutions - templates are study aids, not solutions)
         safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in form.title)
         filename = f"{safe_title}_template.md"
         output = config.reports_dir / filename

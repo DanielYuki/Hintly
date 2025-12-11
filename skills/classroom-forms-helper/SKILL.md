@@ -27,6 +27,18 @@ Read, analyze, and prepare for Google Forms linked from Classroom activities.
 - 📝 Generate answer templates
 - 📊 Categorize question types
 
+### Solve Form (AI-Powered)
+
+AI generates answers to all questions:
+
+```bash
+python {baseDir}/scripts/solve_form.py <FORM_URL> \
+  --provider openai \  # optional
+  --context "Based on Cold War history"  # optional context
+```
+
+**Output**: Complete solution saved to `outputs/solutions/`
+
 ---
 
 ## Commands

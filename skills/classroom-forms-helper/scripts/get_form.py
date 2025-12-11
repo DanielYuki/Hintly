@@ -18,7 +18,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 
-from core.forms_api import FormsClient
+from core.browser_forms import BrowserFormsClient
 
 
 console = Console()
@@ -34,8 +34,8 @@ def get_form(form_url: str, output_format: str = "table"):
     """
     console.print(f"[cyan]Fetching form from URL...[/cyan]")
     
-    client = FormsClient()
-    form = client.get_form_from_url(form_url)
+    client = BrowserFormsClient()
+    form = client.get_form(form_url)
     
     console.print(f"[green]✓[/green] Form: [bold]{form.title}[/bold]")
     console.print(f"[green]✓[/green] Questions: [cyan]{len(form.questions)}[/cyan]")
@@ -89,9 +89,7 @@ def get_form(form_url: str, output_format: str = "table"):
         
         console.print(table)
         
-        # Show form link
-        if form.respondent_uri:
-            console.print(f"\n[dim]Form link: {form.respondent_uri}[/dim]")
+        console.print(f"\n[dim]Form URL: {form_url}[/dim]")
 
 
 def main():

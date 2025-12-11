@@ -17,7 +17,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.markdown import Markdown
 
-from core.forms_api import FormsClient
+from core.browser_forms import BrowserFormsClient
 from core.llm_client import LLMClient, LLMProvider
 
 
@@ -34,8 +34,8 @@ def analyze_form(form_url: str, provider: str = None):
     """
     # Get form
     console.print("[cyan]Fetching form...[/cyan]")
-    client = FormsClient()
-    form = client.get_form_from_url(form_url)
+    client = BrowserFormsClient()
+    form = client.get_form(form_url)
     
     console.print(f"[green]✓[/green] Form: [bold]{form.title}[/bold]")
     console.print(f"[green]✓[/green] Questions: [cyan]{len(form.questions)}[/cyan]")
